@@ -29,7 +29,7 @@ label = Label(window, text="Ахах, ЧЫЖЫК", font=("Times New Roman", 24),
 lbl = Label(window, text="Ахах, ЧВК 'ЧИЖИК'", font=("Times New Roman", 24), bg="yellow", fg="blue")
 label.grid(column=0, row=0)
 lbl.grid(column=0, row=1)
-txt = Entry(window, width=10, state=listState.get(num))
+txt = Entry(window, width=10, state=listState.get(num), show='*')
 txt.grid(column=2, row=0)
 btn = Button(window, text="Не нажимать!", command=clicked)
 btn.grid(column=1, row=0)
