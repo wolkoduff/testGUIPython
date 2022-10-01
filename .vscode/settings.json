@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:testGUIPython}/sharobot.db",
+            "name": "bd"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
