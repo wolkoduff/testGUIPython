@@ -6,11 +6,11 @@ num = 0
 def clicked():
     global num
     if (num == 0):
-        num += 0
-    else:
         num += 1
+    else:
+        num -= 1
     res = "Hi {}".format(txt.get())
-    res = res + str(num)
+    # res = res + str(num)
     lbl.configure(text=res)
     txt.configure(state=list.get(num))
 
