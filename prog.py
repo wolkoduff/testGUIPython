@@ -32,9 +32,11 @@ lbl.grid(column=0, row=1)
 txt = Entry(window, width=10, show='*')
 txt.grid(column=2, row=0)
 combo = Combobox(window)
-combo['values'] = (1, 2, 3, 4, 5, 'Тухляк-поляк')
+values = (1, 2, 3, 4, 5, 'Толчок')
+combo['values'] = values
 combo.current(5)
 combo.grid(column=3,row=5)
+combo['state'] = 'readonly'
 btn = Button(window, text="Не нажимать!", command=clicked)
 btn.grid(column=1, row=0)
 btn.focus()
