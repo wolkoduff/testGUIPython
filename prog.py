@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter.ttk import Combobox
+from tkinter.ttk import Checkbutton
 
 num = -1
 
@@ -22,6 +23,10 @@ def clicked():
     
     #txt.configure(state=listState.get(num))
     
+def change_state():
+    flag = chk_state.get()
+    print(flag)
+
 window = Tk()
 # listState = {-1 : 'disabled', 0 : 'normal'}
 window.title("Добро пожаловать!")
@@ -39,7 +44,11 @@ combo.grid(column=3,row=5)
 combo['state'] = 'readonly'
 btn = Button(window, text="Не нажимать!", command=clicked)
 btn.grid(column=1, row=0)
-btn.focus()
+# btn.focus()
+chk_state = BooleanVar()
+chkbox = Checkbutton(window, text="Подписаться", var=chk_state, command=change_state)
+chkbox.grid(column=20, row=10)
+chkbox.focus()
 window.geometry('1366x768')
 # window.wm_attributes("-alpha", 0.85)
 window.resizable(width=false, height=false)
