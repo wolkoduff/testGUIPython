@@ -11,3 +11,6 @@ print("----------")
 default = Person("Default")
 default.showInfo()
 print("-------")
+
+f = open("claim.txt", 'r', encoding="utf8")
+print(f.read())
