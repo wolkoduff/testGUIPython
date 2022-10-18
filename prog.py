@@ -8,6 +8,7 @@ num = -1
 false = False
 true = True
 
+
 def clicked():
     global num
     if (num == -1):
@@ -19,13 +20,16 @@ def clicked():
     res = "Привет {}".format(str)
     txt.delete(0, len(str))
     label.configure(text=res)
-    messagebox.showinfo('ОБрати Внимание!!! СДЕЛАНО В ГЕРМАНИИ!!!', 'Ваше значение в комбо-боксе следующее: ' + combo.get())
-    
-    #txt.configure(state=listState.get(num))
-    
+    messagebox.showinfo('ОБрати Внимание!!! СДЕЛАНО В ГЕРМАНИИ!!!',
+                        'Ваше значение в комбо-боксе следующее: ' + combo.get())
+
+    # txt.configure(state=listState.get(num))
+
+
 def change_state():
     flag = chk_state.get()
     print(flag)
+
 
 window = Tk()
 # listState = {-1 : 'disabled', 0 : 'normal'}
@@ -40,7 +44,7 @@ combo = Combobox(window)
 values = (1, 2, 3, 4, 5, 'Толчок')
 combo['values'] = values
 combo.current(5)
-combo.grid(column=3,row=5)
+combo.grid(column=3, row=5)
 combo['state'] = 'readonly'
 btn = Button(window, text="Не нажимать!", command=clicked)
 btn.grid(column=1, row=0)
