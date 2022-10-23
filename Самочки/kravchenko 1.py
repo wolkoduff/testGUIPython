@@ -15,7 +15,10 @@ def clicked():
     txt.configure(state=list.get(num))
 
 window = Tk()
-list = {1 : 'disabled', 0 : 'normal'}
+list = { 1 : 'disabled', 
+         0 : 'normal',
+        -1 : 'booooobs'}
+
 window.title("папка!?")
 label = Label(window, text="Hello", font=("Algerian", 24), bg="red", fg="blue")
 lbl = Label(window, text="YOu are", font=("Algerian", 24), bg="yellow", fg="black")
