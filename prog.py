@@ -8,16 +8,22 @@ num = -1
 false = False
 true = True
 
+
 def write_history(message, file, encoding):
     file.write(message, encoding=encoding)
+
 
 def write_history(message, file):
     write_history(message, file, "utf8")
 
 
+# Обновить путь к питону
+# C:\Python№\Lib;C:\Python№\DLLs;C:\Python№\Lib\lib-tk;C:\other-foolder-on-the-path где python№ - репозиторий питона
+#
+
 def clicked():
     global num
-    if (num == -1):
+    if num == -1:
         num += 1
     else:
         num -= 1
@@ -35,7 +41,8 @@ def clicked():
 def change_state():
     flag = chk_state.get()
 
-print(mbg:="bomb")
+
+print(mbg := "bomb")
 print(mbg)
 
 # Подготовить к следующему уроку:
