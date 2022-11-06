@@ -1,5 +1,9 @@
 from Person import Person
 
+def showInformation():
+    value = input("Введите текст: ")
+    print(value)
+
 sasha = Person("Sasha", 10, "Male")
 sasha.showInfo()
 print("----------------")
@@ -10,7 +14,9 @@ print("----------")
 
 default = Person("Default")
 default.showInfo()
-print("-------")
+print("-------\n\n")
 
-f = open("claim.txt", 'r', encoding="utf8")
-print(f.read())
+showInformation()
+
+#f = open("claim.txt", 'r', encoding="utf8")
+#print(f.read())
