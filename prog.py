@@ -36,19 +36,27 @@ def clicked():
     # Вставить в текстовое поле
     txt.insert(0, '15')
     label.configure(text=res)
-    # messagebox.showinfo('ОБрати Внимание!!! СДЕЛАНО В ГЕРМАНИИ!!!',
-    # 'Ваше значение в комбо-боксе следующее: ' + combo.get())
+    messagebox.showinfo('ОБрати Внимание!!! СДЕЛАНО В ГЕРМАНИИ!!!',
+    'Ваше значение в комбо-боксе следующее: ' + combo.get())
 
     # txt.configure(state=listState.get(num))
 
 
 def joker():
-    print(string)
+    num = selected.get()
+    if num == 1:
+        messagebox.showinfo("Прювет")
+    elif num == 2:
+        messagebox.showwarning("осторожно")
+    else:
+        messagebox.showerror("Бомбочка!")
+    
     label.configure(text=selected.get())
 
 
 def change_state():
     flag = chk_state.get()
+    print(flag)
 
 
 window = Tk()
@@ -71,7 +79,7 @@ pixelVirtual = PhotoImage(width=10, height=10)
 btn = Button(window, image=pixelVirtual, text="Не нажимать!", command=clicked, compound="c")
 btn.grid(column=1, row=0)
 chk_state = BooleanVar()
-chkbox = Checkbutton(window, text="Подписаться", command=change_state)
+chkbox = Checkbutton(window, text="Подписаться", variable=chk_state, command=change_state)
 chkbox.grid(column=20, row=10)
 chkbox.focus()
 selected = IntVar()
