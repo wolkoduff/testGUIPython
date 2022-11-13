@@ -22,8 +22,9 @@ def add_change_button(number):
 
 def add_number(text):
     value = textEntry.get()  # Получаем содержимое тектового поля
-    if value[0] == str(0):  # Если калькулятор только запущен, в текстовом поле явно 0
-        textEntry.delete(0, END)  # очищаем текстовое поле
+    if value[0] == '0':   # Если калькулятор только запущен, в текстовом поле явно 0
+        if (len(value) == 1):
+            textEntry.delete(0, END)  # очищаем текстовое поле
 
     textEntry.insert(len(value), text)  # Вставляем наше значение
 
@@ -33,8 +34,8 @@ window.title = "Кулькулятор, будь он не ладен"
 
 textEntry = Entry(window,  # Куда добавляем наше текстовое поле, т.е. на окно
                   justify=RIGHT,  # Выравнивание справа
-                  font=default_font(),  # Задание размера по умолчанию, но можно использовать и свой
-                  width=20  # Размер окна
+                  font=default_font()  # Задание размера по умолчанию, но можно использовать и свой
+                  #width=20  # Размер окна
                   )
 
 textEntry.grid(row=0,  # начальная строка в сетке
@@ -45,7 +46,7 @@ textEntry.grid(row=0,  # начальная строка в сетке
                )
 textEntry.insert(0, "0")
 
-add_button(1).grid(row=3, column=0, stick="wens", padx=5, pady=5)
+add_button(1).grid(row=3, column=0, stick="wens", padx=5, pady=5)   #WENS - West East North South ЗВСЮ
 add_button(2).grid(row=3, column=1, stick="wens", padx=5, pady=5)
 add_button(3).grid(row=3, column=2, stick="wens", padx=5, pady=5)
 add_button(4).grid(row=2, column=0, stick="wens", padx=5, pady=5)
@@ -61,3 +62,5 @@ add_button('+/-').grid(row=4, column=0, stick="wens", padx=5, pady=5)
 add_button('.').grid(row=4, column=2, stick="wens", padx=5, pady=5)
 
 window.mainloop()
+
+
