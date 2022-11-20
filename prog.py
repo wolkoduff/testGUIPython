@@ -1,8 +1,13 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter.scrolledtext import ScrolledText
+from tkinter.ttk import *
+'''
 from tkinter.ttk import Combobox
 from tkinter.ttk import Checkbutton
 from tkinter.ttk import Radiobutton
+from tkinter.ttk import Progressbar
+'''
 
 num = -1
 
@@ -21,6 +26,11 @@ def write_history(message, file):
 # Обновить путь к питону
 # C:\Python№\Lib;C:\Python№\DLLs;C:\Python№\Lib\lib-tk;C:\other-foolder-on-the-path где python№ - репозиторий питона
 #
+
+
+# Пройти Текстовая область со скроллингом
+# Счётчик итератор
+# progress bar
 
 def clicked():
     global num
@@ -59,6 +69,14 @@ def change_state():
     print(flag)
 
 
+def change_value(value):
+    bar['value'] = int(value)
+
+
+def change_value():
+    bar['value'] = int(spin1.get())
+
+
 window = Tk()
 window.title("Добро пожаловать!")
 label = Label(window, text="Ахах, ЧЫЖЫК", font=("Times New Roman", 24))
@@ -89,6 +107,24 @@ rad3 = Radiobutton(window, text="Расчёт окончен", value=3, variable
 rad1.grid(column=3, row=1)
 rad2.grid(column=4, row=1)
 rad3.grid(column=5, row=1)
+
+# Текстовое поле с бегунком
+scrolledTxt = ScrolledText(window, width=40, height=10)
+scrolledTxt.insert(INSERT, "Какой-то рандомный текст рандомного челика")
+scrolledTxt.grid(column=1, row=20)
+
+progress = IntVar()
+# С лямбдой меняем прогресс бар
+# spin1 = Spinbox(window, from_=0, to=100, width=5, command= lambda : change_value(spin1.get()))     # счётчик пошаговый от 10 до 1000
+# Без лямбды напрямую
+spin1 = Spinbox(window, from_=0, to=100, width=5, command=change_value)     # счётчик пошаговый от 10 до 1000
+spin2 = Spinbox(window, values=(3, 5, 7, 11), width=5)  # использовать готовый массив данных
+spin1.grid(column=0, row=10)
+spin2.grid(column=0, row=11)
+
+bar = Progressbar(window, length=100, value=10)
+bar.grid(column=0, row=12)
+
 window.geometry('1366x768')
 window.resizable(width=false, height=false)
 window.mainloop()
