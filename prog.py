@@ -9,6 +9,9 @@ from tkinter.ttk import Radiobutton
 from tkinter.ttk import Progressbar
 '''
 
+# К следующему разу подготовить bind подробнее
+# Картинки на экране приложения
+
 num = -1
 
 false = False
@@ -23,6 +26,7 @@ def write_history(message, file):
     write_history(message, file, "utf8")
 
 
+
 # Обновить путь к питону
 # C:\Python№\Lib;C:\Python№\DLLs;C:\Python№\Lib\lib-tk;C:\other-foolder-on-the-path где python№ - репозиторий питона
 #
@@ -31,6 +35,9 @@ def write_history(message, file):
 # Пройти Текстовая область со скроллингом
 # Счётчик итератор
 # progress bar
+# pack
+# скроллбар
+# 
 
 def clicked():
     global num
@@ -76,6 +83,20 @@ def change_value(value):
 def change_value():
     bar['value'] = int(spin1.get())
 
+
+def press_button(event):
+    print(event)
+
+
+def press_key(event):
+    messagebox.showerror("ERROR", "Невозможно использование данной комбинации клавиш")
+    print(event)
+
+def hover_button(event):
+    messagebox.showwarning("Внимание", "Пожалуйста, не нажимай! Я тебя сльозно прошу")
+
+def leave_button(event):
+    messagebox.showinfo("Ряхмят!", "Спасибо!")
 
 window = Tk()
 window.title("Добро пожаловать!")
@@ -125,6 +146,24 @@ spin2.grid(column=0, row=11)
 bar = Progressbar(window, length=100, value=10)
 bar.grid(column=0, row=12)
 
-window.geometry('1366x768')
+#window.geometry('1366x768')
 window.resizable(width=false, height=false)
+
+window.bind('<Double-1>', press_button)
+window.bind('<2>', press_button)
+window.bind('<3>', press_button)
+
+#btn.bind('<Enter>', hover_button)
+
+text = Text(window, height=3,width=60)
+text.grid(column=9, row=2)
+
+scrollbar = Scrollbar(window)
+scrollbar['command'] = text.yview
+text['yscrollcommand']=scrollbar.set
+
+scrollbar.grid(row=1, column=7)
+
+scrolledTxt.bind('<Control-KeyPress-c>', press_key)
 window.mainloop()
+
