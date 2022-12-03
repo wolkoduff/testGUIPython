@@ -1,7 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import *
+from PIL import Image, ImageTk
+
 '''
 from tkinter.ttk import Combobox
 from tkinter.ttk import Checkbutton
@@ -9,13 +12,18 @@ from tkinter.ttk import Radiobutton
 from tkinter.ttk import Progressbar
 '''
 
-# К следующему разу подготовить bind подробнее
-# Картинки на экране приложения
-
 num = -1
 
 false = False
 true = True
+
+
+def test_bind_key(event):
+    print(event.char)
+
+
+def test_bind_button(event):
+    print(event)
 
 
 def write_history(message, file, encoding):
@@ -32,12 +40,8 @@ def write_history(message, file):
 #
 
 
-# Пройти Текстовая область со скроллингом
-# Счётчик итератор
-# progress bar
-# pack
-# скроллбар
-# 
+# Перешли на создание телеграм-бота
+# TODO: Придумать какой-нибудь интерфейс для рабочего приложения
 
 def clicked():
     global num
@@ -54,20 +58,20 @@ def clicked():
     txt.insert(0, '15')
     label.configure(text=res)
     messagebox.showinfo('ОБрати Внимание!!! СДЕЛАНО В ГЕРМАНИИ!!!',
-    'Ваше значение в комбо-боксе следующее: ' + combo.get())
+                        'Ваше значение в комбо-боксе следующее: ' + combo.get())
 
     # txt.configure(state=listState.get(num))
 
 
 def joker():
-    num = selected.get()
-    if num == 1:
+    number = selected.get()
+    if number == 1:
         messagebox.showinfo("Прювет")
-    elif num == 2:
+    elif number == 2:
         messagebox.showwarning("осторожно")
     else:
         messagebox.showerror("Бомбочка!")
-    
+
     label.configure(text=selected.get())
 
 
@@ -98,12 +102,22 @@ def hover_button(event):
 def leave_button(event):
     messagebox.showinfo("Ряхмят!", "Спасибо!")
 
+def select_file():
+    path = filedialog.askopenfilename(title="Выберите изображение для добавления",
+                                      filetypes=(('image files', "*.jpg"), ('all files', '*.*')))
+    img = Image.open(path)
+    img = ImageTk.PhotoImage(img, size=(20, 20))
+    label_image = Label(window, image=img)
+    label_image.image = img
+    label_image.grid(column=20, row=15)
+
 window = Tk()
 window.title("Добро пожаловать!")
 label = Label(window, text="Ахах, ЧЫЖЫК", font=("Times New Roman", 24))
 lbl = Label(window, text="Ахах, ЧВК 'ЧИЖИК'", font=("Times New Roman", 24))
 label.grid(column=0, row=0)
 lbl.grid(column=0, row=1)
+# Однострочное текстовое поле
 txt = Entry(window, width=10, show='*')
 txt.grid(column=2, row=0)
 txt['state'] = 'readonly'
@@ -114,8 +128,7 @@ combo.current(5)
 combo.grid(column=3, row=5)
 combo['state'] = 'readonly'
 string = StringVar()
-pixelVirtual = PhotoImage(width=10, height=10)
-btn = Button(window, image=pixelVirtual, text="Не нажимать!", command=clicked, compound="c")
+btn = Button(window, text="Не нажимать!", command=clicked, compound="c")
 btn.grid(column=1, row=0)
 chk_state = BooleanVar()
 chkbox = Checkbutton(window, text="Подписаться", variable=chk_state, command=change_state)
@@ -129,22 +142,33 @@ rad1.grid(column=3, row=1)
 rad2.grid(column=4, row=1)
 rad3.grid(column=5, row=1)
 
-# Текстовое поле с бегунком
+# Многострочное текстовое поле
 scrolledTxt = ScrolledText(window, width=40, height=10)
 scrolledTxt.insert(INSERT, "Какой-то рандомный текст рандомного челика")
 scrolledTxt.grid(column=1, row=20)
 
 progress = IntVar()
 # С лямбдой меняем прогресс бар
-# spin1 = Spinbox(window, from_=0, to=100, width=5, command= lambda : change_value(spin1.get()))     # счётчик пошаговый от 10 до 1000
+spin1 = Spinbox(window, from_=0, to=100, width=5,
+                command=lambda: change_value(spin1.get()))  # счётчик пошаговый от 10 до 1000
 # Без лямбды напрямую
-spin1 = Spinbox(window, from_=0, to=100, width=5, command=change_value)     # счётчик пошаговый от 10 до 1000
-spin2 = Spinbox(window, values=(3, 5, 7, 11), width=5)  # использовать готовый массив данных
-spin1.grid(column=0, row=10)
-spin2.grid(column=0, row=11)
+# spin1 = Spinbox(window, from_=10, to=100, width=5, command=change_value)  # счётчик пошаговый от 10 до 1000
+spin2 = Spinbox(window, values=('3', '5', '7', '11'), width=5)  # использовать готовый массив данных
+# spin1.grid(column=0, row=10)
+spin2.grid(column=0, row=12)
 
-bar = Progressbar(window, length=100, value=10)
-bar.grid(column=0, row=12)
+bar = Progressbar(window, length=100, value=0)
+# bar.grid(column=0, row=19)
+
+button_ttk = tkinter.ttk.Checkbutton(window, text="ttk.Button", command=select_file, compound="c")
+button_ttk.grid(column=0, row=15)
+
+# Немного про метод bind()
+# Для обработки нажатия на кнопки нужно создать метод, который будет вызываться как с кнопками
+window.bind("<Key>", test_bind_key)  # срабатывает при нажатии на клавишу на клавиатуре
+window.bind("<Button-1>", test_bind_button)  # ЛКМ
+window.bind("<Button-2>", test_bind_button)  # СКМ
+window.bind("<Button-3>", test_bind_button)  # ПКМ
 
 #window.geometry('1366x768')
 window.resizable(width=false, height=false)
@@ -165,5 +189,6 @@ text['yscrollcommand']=scrollbar.set
 scrollbar.grid(row=1, column=7)
 
 scrolledTxt.bind('<Control-KeyPress-c>', press_key)
+window.geometry('1366x768')
+# window.resizable(width=false, height=false)
 window.mainloop()
-
