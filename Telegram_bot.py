@@ -30,7 +30,7 @@ def echo(message):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    bot.send_message(message.chat.id, "Добро пожаловать, *{0.first_name}*!\nЯ - **{1.first_name}**, бот ".format(
+    bot.send_message(message.chat.id, "Добро пожаловать, _{0.first_name}_!\nЯ - *{1.first_name}*, бот ".format(
         message.from_user, bot.get_me()), parse_mode='markdown', )
 
 # Запускаем бота
