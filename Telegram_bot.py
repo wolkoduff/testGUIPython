@@ -33,5 +33,17 @@ def start(message):
     bot.send_message(message.chat.id, "Добро пожаловать, _{0.first_name}_!\nЯ - *{1.first_name}*, бот ".format(
         message.from_user, bot.get_me()), parse_mode='markdown', )
 
+@bot.message_handler(commands=['Стикер'])
+def send_sticker(message):
+    stiker = open('stikers/')
+
+    #keyboard
+    markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    item1 = telebot.types.KeyboardButton("Первая кнопка")
+    item2 = telebot.types.KeyboardButton("Вторая кнопка")
+    markup.add(item1, item2)
+
+
+
 # Запускаем бота
 bot.polling(none_stop=True) # не останавливаться
