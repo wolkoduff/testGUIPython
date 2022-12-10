@@ -36,12 +36,14 @@ def echo(message):
 @bot.message_handler(commands=['start'])
 def start(message):
     bot.send_message(message.chat.id, "Добро пожаловать, _{0.first_name}_!\nЯ - *{1.first_name}*, бот ".format(
-        message.from_user, bot.get_me()), parse_mode='markdown', )
+        message.from_user, bot.get_me()), parse_mode='markdown'#, reply_markup=keyboard
+                     )
 
 
 @bot.message_handler(commands=['Стикер'])
 def send_sticker(message):
-    stiker = open('stikers/')
+    stiker = open('stikers/...', 'rb')
+    bot.send_sticker(message.chat.id, stiker)
 
     # keyboard
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
