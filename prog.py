@@ -34,7 +34,6 @@ def write_history(message, file):
     write_history(message, file, "utf8")
 
 
-
 # Обновить путь к питону
 # C:\Python№\Lib;C:\Python№\DLLs;C:\Python№\Lib\lib-tk;C:\other-foolder-on-the-path где python№ - репозиторий питона
 #
@@ -96,11 +95,16 @@ def press_key(event):
     messagebox.showerror("ERROR", "Невозможно использование данной комбинации клавиш")
     print(event)
 
+
 def hover_button(event):
     messagebox.showwarning("Внимание", "Пожалуйста, не нажимай! Я тебя сльозно прошу")
+    print(event)
+
 
 def leave_button(event):
     messagebox.showinfo("Ряхмят!", "Спасибо!")
+    print(event)
+
 
 def select_file():
     path = filedialog.askopenfilename(title="Выберите изображение для добавления",
@@ -110,6 +114,7 @@ def select_file():
     label_image = Label(window, image=img)
     label_image.image = img
     label_image.grid(column=20, row=15)
+
 
 window = Tk()
 window.title("Добро пожаловать!")
@@ -131,9 +136,9 @@ string = StringVar()
 btn = Button(window, text="Не нажимать!", command=clicked, compound="c")
 btn.grid(column=1, row=0)
 chk_state = BooleanVar()
-chkbox = Checkbutton(window, text="Подписаться", variable=chk_state, command=change_state)
-chkbox.grid(column=20, row=10)
-chkbox.focus()
+chk_box = Checkbutton(window, text="Подписаться", variable=chk_state, command=change_state)
+chk_box.grid(column=20, row=10)
+chk_box.focus()
 selected = IntVar()
 rad1 = Radiobutton(window, text="Первый нах", value=1, variable=selected, command=joker)
 rad2 = Radiobutton(window, text="Второй нах", value=2, variable=selected, command=joker)
@@ -160,7 +165,7 @@ spin2.grid(column=0, row=12)
 bar = Progressbar(window, length=100, value=0)
 # bar.grid(column=0, row=19)
 
-button_ttk = tkinter.ttk.Checkbutton(window, text="ttk.Button", command=select_file, compound="c")
+button_ttk = Checkbutton(window, text="ttk.Button", command=select_file, compound="c")
 button_ttk.grid(column=0, row=15)
 
 # Немного про метод bind()
@@ -170,21 +175,21 @@ window.bind("<Button-1>", test_bind_button)  # ЛКМ
 window.bind("<Button-2>", test_bind_button)  # СКМ
 window.bind("<Button-3>", test_bind_button)  # ПКМ
 
-#window.geometry('1366x768')
+# window.geometry('1366x768')
 window.resizable(width=false, height=false)
 
 window.bind('<Double-1>', press_button)
 window.bind('<2>', press_button)
 window.bind('<3>', press_button)
 
-#btn.bind('<Enter>', hover_button)
+# btn.bind('<Enter>', hover_button)
 
-text = Text(window, height=3,width=60)
+text = Text(window, height=3, width=60)
 text.grid(column=9, row=2)
 
 scrollbar = Scrollbar(window)
 scrollbar['command'] = text.yview
-text['yscrollcommand']=scrollbar.set
+text['yscrollcommand'] = scrollbar.set
 
 scrollbar.grid(row=1, column=7)
 
