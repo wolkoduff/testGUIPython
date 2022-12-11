@@ -19,7 +19,7 @@ def sticker(message):
     path = "TGBot\\stickers\\senya\\" # свой путь к стикерам
     senyaListStickers = os.listdir(path) # загрузить список стикеров
     size_list = len(senyaListStickers) # получить размер списка
-    selected_sticker = random.randint(0, size_list) # рандомное число стикера
+    selected_sticker = random.randint(0, size_list - 1) # рандомное число стикера
     pathSt = path + senyaListStickers[selected_sticker] # получить стикер
     sticker = open(pathSt, 'rb')
     bot.send_sticker(message.chat.id, sticker)
