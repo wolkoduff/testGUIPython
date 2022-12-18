@@ -40,10 +40,10 @@ def stop(message):
     bot.stop_bot()
 
 
-@bot.message_handler(commands=['Стикер'])
-def send_sticker(message):
-    stiker = open('stikers/...', 'rb')
-    bot.send_sticker(message.chat.id, stiker)
+#@bot.message_handler(commands=['Стикер'])
+#def send_sticker(message):
+#    stiker = open('stikers/...', 'rb')
+#    bot.send_sticker(message.chat.id, stiker)
 
 
 @bot.message_handler(content_types=['text'])
@@ -77,18 +77,19 @@ def echo(message):
 def callback_inline(call):
     try:
         if call.message:
-            if call.data == "good":
-                bot.send_message(call.message.chat.id, "Ахуенно мазафака")
-            elif call.data == "bad":
-                bot.send_message(call.message.chat.id, "НУ йобана в рот, соболезную")
-            elif call.data == "chicken":
-                bot.send_message(call.message.chat.id, "Сам петух! У нас Ростикс")
-            elif call.data == "burger_king":
-                bot.send_message(call.message.chat.id, "Вот и иди по адресу королевскому")
-            else:
-                bot.send_message(call.message.chat.id, "НИ ПОНЯЛ НИХУЯ")
-
+            
             chat_id = call.message.chat.id
+
+            if call.data == "good":
+                bot.send_message(chat_id, "Это ж хорошо, мазафака")
+            elif call.data == "bad":
+                bot.send_message(chat_id, "НУ долбанный крот в рот, соболезную")
+            elif call.data == "chicken":
+                bot.send_message(chat_id, "Сам петух! У нас Ростикс")
+            elif call.data == "burger_king":
+                bot.send_message(chat_id, "Вот и иди по адресу королевскому")
+            else:
+                bot.send_message(chat_id, "НИ ПОНЯЛ НИЧЕГО")
 
             # remove inline buttons
             bot.edit_message_text(chat_id=chat_id, message_id=call.message.message_id, text="БК",
