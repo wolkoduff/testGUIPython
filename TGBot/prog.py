@@ -1,6 +1,5 @@
 import telebot
 from config import *
-import os
 import random
 
 from telebot.types import *
@@ -26,13 +25,14 @@ def start(message):
 
 @bot.message_handler(commands=['sticker'])
 def sticker(message):
-    path = "TGBot\\stickers\\senya\\" # свой путь к стикерам
-    senyaListStickers = os.listdir(path) # загрузить список стикеров
-    size_list = len(senyaListStickers) # получить размер списка
-    selected_sticker = random.randint(0, size_list - 1) # рандомное число стикера
-    pathSt = path + senyaListStickers[selected_sticker] # получить стикер
-    sticker = open(pathSt, 'rb')
-    bot.send_sticker(message.chat.id, sticker)
+    path = "TGBot\\stickers\\senya\\"  # свой путь к стикерам
+    senyaListStickers = os.listdir(path)  # загрузить список стикеров
+    size_list = len(senyaListStickers)  # получить размер списка
+    selected_sticker = random.randint(0, size_list - 1)  # рандомное число стикера
+    pathSt = path + senyaListStickers[selected_sticker]  # получить стикер
+    stiker = open(pathSt, 'rb')
+    bot.send_sticker(message.chat.id, stiker)
+
 
 # Если создаём эхо,т.е. что не отправь, он ответит, тогда пишем
 @bot.message_handler(content_types=['text'])
@@ -53,7 +53,5 @@ def echo(message):
             bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
 
 
-
 # Запускаем бота
 bot.polling(none_stop=True)  # не останавливаться
-

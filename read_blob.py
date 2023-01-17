@@ -1,10 +1,12 @@
 import sqlite3
 
+
 def writeTofile(data, filename):
     # Convert binary data to proper format and write it on Hard Disk
     with open(filename, 'wb') as file:
         file.write(data)
     print("Stored blob data into: ", filename, "\n")
+
 
 def readBlobData(empId):
     try:
@@ -35,6 +37,7 @@ def readBlobData(empId):
         if sqliteConnection:
             sqliteConnection.close()
             print("sqlite connection is closed")
+
 
 readBlobData(1)
 readBlobData(2)
