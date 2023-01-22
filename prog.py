@@ -3,7 +3,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import *
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 '''
 from tkinter.ttk import Combobox
@@ -109,11 +109,11 @@ def leave_button(event):
 def select_file():
     path = filedialog.askopenfilename(title="Выберите изображение для добавления",
                                       filetypes=(('image files', "*.jpg"), ('all files', '*.*')))
-    img = Image.open(path)
-    img = ImageTk.PhotoImage(img, size=(20, 20))
-    label_image = Label(window, image=img)
-    label_image.image = img
-    label_image.grid(column=20, row=15)
+    # img = Image.open(path)
+    # img = ImageTk.PhotoImage(img, size=(20, 20))
+    # label_image = Label(window, image=img)
+    # label_image.image = img
+    # label_image.grid(column=20, row=15)
 
 
 window = Tk()
@@ -182,7 +182,7 @@ window.bind('<Double-1>', press_button)
 window.bind('<2>', press_button)
 window.bind('<3>', press_button)
 
-# btn.bind('<Enter>', hover_button)
+btn.bind('<Enter>', hover_button)
 
 text = Text(window, height=3, width=60)
 text.grid(column=9, row=2)
@@ -197,3 +197,7 @@ scrolledTxt.bind('<Control-KeyPress-c>', press_key)
 window.geometry('1366x768')
 # window.resizable(width=false, height=false)
 window.mainloop()
+
+
+
+# aoigram подготовить 
