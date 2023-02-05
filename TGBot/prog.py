@@ -2,11 +2,21 @@ import telebot
 from config import *
 import random
 
+# TODO: сделать викторину на боте телеграм к следующему уроку
+
 from telebot.types import *
+
+def check_answers(answer, rule_answer):
+    if answer == rule_answer:
+        for quest in WORDS:
+            yield QUESTION.format(quest)
+    else:
+        return WORDS[random.randint(0, len(WORDS) - 1)]
 
 # Инициализировали бота
 bot = telebot.TeleBot(TOKEN)
 
+answer = 0
 
 # Обработка команды /start
 @bot.message_handler(commands=['start'])
@@ -18,10 +28,12 @@ def start(message):
 
     chat_id = message.chat.id
 
+    '''
     bot.send_message(chat_id, "Бодро пожаловать, *{0.last_name}* _{1.first_name}_!\nЯ - *{2.first_name}*, бот."
                      .format(message.from_user, message.from_user, bot.get_me()), parse_mode='markdown')
     bot.send_message(chat_id, "Хочешь подробности?", reply_markup=markup)
-
+    '''
+    bot.send_message(chat_id, QUESTION.format(WORDS[0]))
 
 @bot.message_handler(commands=['sticker'])
 def sticker(message):
@@ -51,7 +63,7 @@ def echo(message):
             bot.send_message(chat_id, "Реклама СБП?")
         else:
             bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
-
+    bot.send_message(chat_id, QUESTION.format(WORDS[0]))
 
 # Запускаем бота
 bot.polling(none_stop=True)  # не останавливаться
