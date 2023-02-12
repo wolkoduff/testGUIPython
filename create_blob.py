@@ -1,10 +1,12 @@
 import sqlite3
 
+
 def convertToBinaryData(filename):
     # Convert digital data to binary format
     with open(filename, 'rb') as file:
         blobData = file.read()
     return blobData
+
 
 def insertBLOB(empId, name, photo, resumeFile):
     try:
@@ -29,6 +31,7 @@ def insertBLOB(empId, name, photo, resumeFile):
         if sqliteConnection:
             sqliteConnection.close()
             print("the sqlite connection is closed")
+
 
 insertBLOB(1, "Smith", "E:\pynative\Python\photos\smith.jpg", "E:\pynative\Python\photos\smith_resume.txt")
 insertBLOB(2, "David", "E:\pynative\Python\photos\david.jpg", "E:\pynative\Python\photos\david_resume.txt")

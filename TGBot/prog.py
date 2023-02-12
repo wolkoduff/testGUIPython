@@ -1,10 +1,11 @@
 import telebot
 from config import *
 import random
+from telebot.types import *
 
 # TODO: сделать викторину на боте телеграм к следующему уроку
+# TODO: aoigram подготовить
 
-from telebot.types import *
 
 def check_answers(answer, rule_answer):
     if answer == rule_answer:
@@ -13,10 +14,12 @@ def check_answers(answer, rule_answer):
     else:
         return WORDS[random.randint(0, len(WORDS) - 1)]
 
+
 # Инициализировали бота
 bot = telebot.TeleBot(TOKEN)
 
 answer = 0
+
 
 # Обработка команды /start
 @bot.message_handler(commands=['start'])
@@ -35,15 +38,16 @@ def start(message):
     '''
     bot.send_message(chat_id, QUESTION.format(WORDS[0]))
 
+
 @bot.message_handler(commands=['sticker'])
 def sticker(message):
-    path = "TGBot\\stickers\\senya\\"  # свой путь к стикерам
-    senyaListStickers = os.listdir(path)  # загрузить список стикеров
+    pathDirs = "TGBot\\stickers\\"  # свой путь к стикерам
+    senyaListStickers = os.listdir(pathDirs)  # загрузить список стикеров
     size_list = len(senyaListStickers)  # получить размер списка
     selected_sticker = random.randint(0, size_list - 1)  # рандомное число стикера
-    pathSt = path + senyaListStickers[selected_sticker]  # получить стикер
-    stiker = open(pathSt, 'rb')
-    bot.send_sticker(message.chat.id, stiker)
+    pathSt = pathDirs + senyaListStickers[selected_sticker]  # получить стикер
+    with open(pathSt, 'rb') as sticker:
+        bot.send_sticker(message.chat.id, sticker)
 
 
 # Если создаём эхо,т.е. что не отправь, он ответит, тогда пишем
@@ -51,7 +55,8 @@ def sticker(message):
 def echo(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
-    text = message.text
+    text = message.text.lower()
+    print(text)
     if message.chat.type == 'private':
         if text == REPLY_LIST[0]:
             bot.send_message(chat_id, "LOOOOOOOL, ЗАТРАЛЛЕН🤣")
@@ -64,6 +69,7 @@ def echo(message):
         else:
             bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
     bot.send_message(chat_id, QUESTION.format(WORDS[0]))
+
 
 # Запускаем бота
 bot.polling(none_stop=True)  # не останавливаться
