@@ -3,7 +3,6 @@ from tkinter import messagebox
 from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import *
-# from PIL import Image, ImageTk
 
 '''
 from tkinter.ttk import Combobox
@@ -197,7 +196,3 @@ scrolledTxt.bind('<Control-KeyPress-c>', press_key)
 window.geometry('1366x768')
 # window.resizable(width=false, height=false)
 window.mainloop()
-
-
-
-# aoigram подготовить 

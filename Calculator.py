@@ -23,7 +23,7 @@ def add_change_button(number):
 def add_number(text):
     value = textEntry.get()  # Получаем содержимое тектового поля
     if value[0] == '0':   # Если калькулятор только запущен, в текстовом поле явно 0
-        if (len(value) == 1):
+        if len(value) == 1:
             textEntry.delete(0, END)  # очищаем текстовое поле
 
     textEntry.insert(len(value), text)  # Вставляем наше значение
