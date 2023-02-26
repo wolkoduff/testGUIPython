@@ -24,6 +24,8 @@ answer = 0
 # Обработка команды /start
 @bot.message_handler(commands=['start'])
 def start(message):
+    chat_id = message.chat.id
+    print(chat_id)
     # Клавиатура
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     for text in REPLY_LIST:
