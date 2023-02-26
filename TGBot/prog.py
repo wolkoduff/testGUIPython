@@ -3,6 +3,7 @@ from config import *
 import random
 from telebot.types import *
 
+
 # TODO: сделать викторину на боте телеграм к следующему уроку
 
 
@@ -33,6 +34,8 @@ def start(message):
     bot.send_message(chat_id, "Бодро пожаловать, *{0.last_name}* _{1.first_name}_!\nЯ - *{2.first_name}*, бот."
                      .format(message.from_user, message.from_user, bot.get_me()), parse_mode='markdown')
     bot.send_message(chat_id, "Хочешь подробности?", reply_markup=markup)
+
+
 #    bot.send_message(chat_id, QUESTION.format(WORDS[0]))
 
 
@@ -45,6 +48,27 @@ def sticker(message):
     pathSt = pathDirs + senyaListStickers[selected_sticker]  # получить стикер
     with open(pathSt, 'rb') as sticker:
         bot.send_sticker(message.chat.id, sticker)
+
+
+@bot.message_handler(commands=['dice'])
+def dice(message):
+    chat_id = message.chat.id
+    print(chat_id)
+    bot.send_dice(chat_id, emoji="🎲")
+
+
+@bot.message_handler(commands=['bowling'])
+def bowling(message):
+    chat_id = message.chat.id
+    print(chat_id)
+    bot.send_dice(chat_id, emoji="🎳")
+
+
+@bot.message_handler(commands=['casino'])
+def casino(message):
+    chat_id = message.chat.id
+    print(chat_id)
+    bot.send_dice(chat_id, emoji="🎰")
 
 
 # Если создаём эхо,т.е. что не отправь, он ответит, тогда пишем
