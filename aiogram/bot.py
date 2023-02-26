@@ -10,7 +10,8 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
 
-# pip install -U --pre aiogram - обновить на aiogram 3.0, поскольку у всех 2.55
+# pip install -U --pre aiogram - обновить на aiogram 3.0, поскольку у всех 2.25
+# pip uninstall aiogram
 
 @dp.message(Command(commands=["start"]))
 async def cmd_start(message: types.Message):
@@ -27,14 +28,19 @@ async def cmd_sec(message: types.Message):
     await message.answer("*СекундЬ*", parse_mode='markdown')
 
 
-@dp.message(Command(commands=["dice"]))
-async def cmd_dice(message: types.Message, bot: Bot):
-    channel_id = message.chat.id
-    print(channel_id)
-    print(bot.id)
+@dp.message(Command(commands=["bowling"]))
+async def cmd_dice(message: types.Message):
     await message.answer_dice(emoji="🎳")  # Если хотим отправить в конкретный чат, тогда необходимо получить
     # идентификатор чата
     await message.answer_dice(emoji="🎲")  # Если хотим отправить в конкретный чат, тогда необходимо получить
+    # идентификатор чата
+    await message.answer_dice(emoji="🎰")  # Если хотим отправить в конкретный чат, тогда необходимо получить
+    # идентификатор чата
+    await message.answer_dice(emoji="🎯")  # Если хотим отправить в конкретный чат, тогда необходимо получить
+    # идентификатор чата
+    await message.answer_dice(emoji="⚽")  # Если хотим отправить в конкретный чат, тогда необходимо получить
+    # идентификатор чата
+    await message.answer_dice(emoji="🏀")  # Если хотим отправить в конкретный чат, тогда необходимо получить
     # идентификатор чата
 
 
