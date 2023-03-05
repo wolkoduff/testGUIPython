@@ -43,13 +43,16 @@ def start(message):
 
 @bot.message_handler(commands=['sticker'])
 def sticker(message):
-    pathDirs = "TGBot\\stickers\\"  # свой путь к стикерам
+    pathDirs = "TGBot\\stickers\\senya"  # свой путь к стикерам
     senyaListStickers = os.listdir(pathDirs)  # загрузить список стикеров
     size_list = len(senyaListStickers)  # получить размер списка
     selected_sticker = random.randint(0, size_list - 1)  # рандомное число стикера
     pathSt = pathDirs + senyaListStickers[selected_sticker]  # получить стикер
+    receiver_rnd = CHAT_IDS[random.randint(0, 3)]
     with open(pathSt, 'rb') as sticker:
         bot.send_sticker(message.chat.id, sticker)
+        bot.send_sticker(receiver_rnd, sticker)
+
 
 
 @bot.message_handler(commands=['dice'])
@@ -78,21 +81,28 @@ def casino(message):
 def echo(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
-    text = message.text.lower()
-    print(text)
-    if message.chat.type == 'private':
-        if text == REPLY_LIST[0]:
-            bot.send_message(chat_id, "LOOOOOOOL, ЗАТРАЛЛЕН🤣")
-        elif text == REPLY_LIST[1]:
-            bot.send_message(chat_id, "Больно и хотелось...")
-        elif text == REPLY_LIST[2]:
-            bot.send_message(chat_id, "ЧИВОООООО?")
-        elif text == REPLY_LIST[3]:
-            bot.send_message(chat_id, "Реклама СБП?")
-        else:
-            bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
-    bot.send_message(chat_id, QUESTION.format(WORDS[0]))
+    # text = message.text.lower()
+    # print(text)
+    # if message.chat.type == 'private':
+    #     if text == REPLY_LIST[0]:
+    #         bot.send_message(chat_id, "LOOOOOOOL, ЗАТРАЛЛЕН🤣")
+    #     elif text == REPLY_LIST[1]:
+    #         bot.send_message(chat_id, "Больно и хотелось...")
+    #     elif text == REPLY_LIST[2]:
+    #         bot.send_message(chat_id, "ЧИВОООООО?")
+    #     elif text == REPLY_LIST[3]:
+    #         bot.send_message(chat_id, "Реклама СБП?")
+    #     else:
+    #         bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
+    # bot.send_message(chat_id, QUESTION.format(WORDS[0]))
+    bot.send_message(chat_id, "БУУУУУУМ")
 
 
 # Запускаем бота
 bot.polling(none_stop=True)  # не останавливаться
+
+
+# 1356924981 - Саша
+# 470054664 - Игнат
+# 1623096517 - Ира
+# 5834419012 - ТАнько
