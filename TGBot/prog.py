@@ -1,3 +1,6 @@
+import os.path
+from pathlib import Path
+
 from telebot.async_telebot import AsyncTeleBot
 import asyncio
 from config import *
@@ -26,15 +29,17 @@ answer = 0
 @bot.message_handler(commands=['start'])
 async def start(message):
     chat_id = message.chat.id
+    last_name = message.from_user.last_name
+    first_name = message.from_user.first_name
     print(chat_id)
     # Клавиатура
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     for text in REPLY_LIST:
         markup.add(KeyboardButton(text))
 
-    await bot.reply_to(message, "Бодро пожаловать, *{0.last_name}* _{1.first_name}_!\nЯ - *{2.first_name}*, бот."
-                     .format(message.from_user, message.from_user, bot.get_me()), parse_mode='markdown')
-    await bot.reply_to(message, "Хочешь подробности?", reply_to_message_id=message.message_id, reply_markup=markup)
+    await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
+                           .format(last_name, first_name, bot.get_me().first_name), parse_mode='markdown')
+    await bot.reply_to(message, "Хочешь подробности?", reply_markup=markup)
 
 
 #    bot.send_message(chat_id, QUESTION.format(WORDS[0]))
@@ -42,22 +47,25 @@ async def start(message):
 
 @bot.message_handler(commands=['sticker'])
 async def sticker(message):
-    pathDirs = "TGBot\\stickers\\senya\\"  # свой путь к стикерам
-    senyaListStickers = os.listdir(pathDirs)  # загрузить список стикеров
-    size_list = len(senyaListStickers)  # получить размер списка
+    pathDirs = Path("stickers")  # свой путь к стикерам
+    listStickerPacks = os.listdir(pathDirs)  # загрузить список пакетов стикеров
+    selectedSticker = listStickerPacks[random.randint(0, len(listStickerPacks) - 1)]
+    absPathToStickers = Path(pathDirs + "\\" + selectedSticker).resolve()
+    listStickers = os.listdir(absPathToStickers)
+    size_list = len(listStickers)  # получить размер списка
     selected_sticker = random.randint(0, size_list - 1)  # рандомное число стикера
-    pathSt = pathDirs + senyaListStickers[selected_sticker]  # получить стикер
-    #receiver_rnd = CHAT_IDS[random.randint(0, 3)]
+    pathSt = listStickers[selected_sticker]  # получить стикер
+    # receiver_rnd = CHAT_IDS[random.randint(0, 3)]
+    chatId = message.chat.id
     with open(pathSt, 'rb') as sticker:
         print(message.chat.id)
-        await bot.send_sticker(message.chat.id, sticker)
+        await bot.send_sticker(chatId, sticker)
     # with open(pathSt, 'rb') as sticker:
     #     print(receiver_rnd)
     #     bot.send_sticker(receiver_rnd, sticker)
 
 
-
-@bot.message_handler(commands=['🎲dice'])
+@bot.message_handler(content_types=["🎲dice"])
 async def dice(message):
     chat_id = message.chat.id
     print(chat_id)
@@ -99,9 +107,8 @@ async def echo(message):
     # bot.send_message(chat_id, QUESTION.format(WORDS[0]))
     await bot.send_message(chat_id, "БУУУУУУМ", reply_to_message_id=message.message_id)
 
-
 # Запускаем бота
-#bot.infinity_polling()  # не останавливаться
+# bot.infinity_polling()  # не останавливаться
 asyncio.run(bot.polling())
 
 # 1356924981 - Саша
