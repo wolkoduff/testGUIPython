@@ -37,8 +37,8 @@ async def start(message):
     for text in REPLY_LIST:
         markup.add(KeyboardButton(text))
 
-    await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
-                           .format(last_name, first_name, bot.get_me().first_name), parse_mode='markdown')
+    #await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
+    #                       .format(last_name, first_name, bot.get_me().first_name), parse_mode='markdown')
     await bot.reply_to(message, "Хочешь подробности?", reply_markup=markup)
 
 
@@ -69,6 +69,7 @@ async def sticker(message):
 async def dice(message):
     chat_id = message.chat.id
     print(chat_id)
+    await bot.delete_message(chat_id=chat_id, message_id=message.message_id)
     await bot.send_dice(chat_id, emoji="🎲")
 
 
@@ -91,7 +92,20 @@ async def casino(message):
 async def echo(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
-    # text = message.text.lower()
+    text = message.text
+    if text in REPLY_LIST:
+        if text == "🎲dice":
+            await dice(message)
+        elif text == "🎳bowling":
+            await bowling(message)
+        elif text == "🎰casino":
+            await casino(message)
+
+    receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
+    # bot.forward_message(disable_notification=True, chat_id= )
+
+    inline_keyboard =
+
     # print(text)
     # if message.chat.type == 'private':
     #     if text == REPLY_LIST[0]:
@@ -105,7 +119,7 @@ async def echo(message):
     #     else:
     #         bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
     # bot.send_message(chat_id, QUESTION.format(WORDS[0]))
-    await bot.send_message(chat_id, "БУУУУУУМ", reply_to_message_id=message.message_id)
+    # await bot.send_message(chat_id, "БУУУУУУМ", reply_to_message_id=message.message_id)
 
 # Запускаем бота
 # bot.infinity_polling()  # не останавливаться
