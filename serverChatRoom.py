@@ -3,7 +3,7 @@ import threading
 
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 PORT = 8000
-ADDRESS = "localhost"
+ADDRESS = "192.168.1.42"
 broadcast_list = []
 my_socket.bind((ADDRESS, PORT))
 

@@ -5,7 +5,7 @@ nickname = input("Введи свой никнейм : ").strip()
 while not nickname:
     nickname = input("Введён пустой никнейм. Попробуй истчо раз: ").strip()
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-HOST = "localhost"  # 127.0.0.1
+HOST = "192.168.1.42"  # 127.0.0.1
 PORT = 8000
 my_socket.connect((HOST, PORT))
 
