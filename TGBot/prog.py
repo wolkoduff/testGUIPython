@@ -19,6 +19,12 @@ def check_answers(answer, rule_answer):
         return WORDS[random.randint(0, len(WORDS) - 1)]
 
 
+def get_inline_keyboard():
+    inline_markup = InlineKeyboardMarkup()
+    for key in INLINE_LIST:
+        inline_markup.add(InlineKeyboardButton(key, callback_data=INLINE_LIST[key]))
+    return inline_markup
+
 # Инициализировали бота
 bot = AsyncTeleBot(TOKEN)
 
@@ -65,7 +71,6 @@ async def sticker(message):
     #     bot.send_sticker(receiver_rnd, sticker)
 
 
-@bot.message_handler(content_types=["🎲dice"])
 async def dice(message):
     chat_id = message.chat.id
     print(chat_id)
@@ -73,14 +78,12 @@ async def dice(message):
     await bot.send_dice(chat_id, emoji="🎲")
 
 
-@bot.message_handler(commands=['🎳bowling'])
 async def bowling(message):
     chat_id = message.chat.id
     print(chat_id)
     await bot.send_dice(chat_id, emoji="🎳")
 
 
-@bot.message_handler(commands=['🎰casino'])
 async def casino(message):
     chat_id = message.chat.id
     print(chat_id)
@@ -93,6 +96,8 @@ async def echo(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
     text = message.text
+    
+
     if text in REPLY_LIST:
         if text == "🎲dice":
             await dice(message)
@@ -100,11 +105,12 @@ async def echo(message):
             await bowling(message)
         elif text == "🎰casino":
             await casino(message)
-
-    receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
+    else:
+        await bot.send_message(chat_id=chat_id, text=message.text, disable_notification=True, reply_markup=get_inline_keyboard())
+    #receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
     # bot.forward_message(disable_notification=True, chat_id= )
 
-    inline_keyboard =
+    # inline_keyboard =
 
     # print(text)
     # if message.chat.type == 'private':
@@ -120,6 +126,13 @@ async def echo(message):
     #         bot.send_message(chat_id, "ДУПЛО СЕБЕ ОТМЕНИ!")
     # bot.send_message(chat_id, QUESTION.format(WORDS[0]))
     # await bot.send_message(chat_id, "БУУУУУУМ", reply_to_message_id=message.message_id)
+
+@bot.callback_query_handler(func=lambda call: True)
+async def callback_query(call):
+    if call.data == "excellent":
+        await bot.answer_callback_query(call.id, "УРааааа!")
+    elif call.data == "fuck":
+        await bot.answer_callback_query(call.id, "Похуй, пляшем")
 
 # Запускаем бота
 # bot.infinity_polling()  # не останавливаться
