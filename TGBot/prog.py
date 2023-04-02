@@ -25,6 +25,7 @@ def get_inline_keyboard():
         inline_markup.add(InlineKeyboardButton(key, callback_data=INLINE_LIST[key]))
     return inline_markup
 
+
 # Инициализировали бота
 bot = AsyncTeleBot(TOKEN)
 
@@ -43,7 +44,7 @@ async def start(message):
     for text in REPLY_LIST:
         markup.add(KeyboardButton(text))
 
-    #await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
+    # await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
     #                       .format(last_name, first_name, bot.get_me().first_name), parse_mode='markdown')
     await bot.reply_to(message, "Хочешь подробности?", reply_markup=markup)
 
@@ -53,20 +54,20 @@ async def start(message):
 
 @bot.message_handler(commands=['sticker'])
 async def sticker(message):
-    pathDirs = Path("stickers")  # свой путь к стикерам
-    listStickerPacks = os.listdir(pathDirs)  # загрузить список пакетов стикеров
-    selectedSticker = listStickerPacks[random.randint(0, len(listStickerPacks) - 1)]
-    absPathToStickers = Path(pathDirs + "\\" + selectedSticker).resolve()
-    listStickers = os.listdir(absPathToStickers)
-    size_list = len(listStickers)  # получить размер списка
+    path_dirs = Path("stickers")  # свой путь к стикерам
+    sticker_pack_list = os.listdir(path_dirs)  # загрузить список пакетов стикеров
+    selected_sticker = sticker_pack_list[random.randint(0, len(sticker_pack_list) - 1)]
+    abs_path_to_stickers = Path(path_dirs + "\\" + selected_sticker).resolve()
+    stickers_list = os.listdir(abs_path_to_stickers)
+    size_list = len(stickers_list)  # получить размер списка
     selected_sticker = random.randint(0, size_list - 1)  # рандомное число стикера
-    pathSt = listStickers[selected_sticker]  # получить стикер
+    path_sticker = stickers_list[selected_sticker]  # получить стикер
     # receiver_rnd = CHAT_IDS[random.randint(0, 3)]
     chatId = message.chat.id
-    with open(pathSt, 'rb') as sticker:
+    with open(path_sticker, 'rb') as sticker:
         print(message.chat.id)
         await bot.send_sticker(chatId, sticker)
-    # with open(pathSt, 'rb') as sticker:
+    # with open(path_sticker, 'rb') as sticker:
     #     print(receiver_rnd)
     #     bot.send_sticker(receiver_rnd, sticker)
 
@@ -96,7 +97,8 @@ async def echo(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
     text = message.text
-    
+    answer_list = ["На пики сам сяду, стул другу подставлю (потому что без друзей)", "Питон ломается, джава "
+                                                                                     "выкидывается"]
 
     if text in REPLY_LIST:
         if text == "🎲dice":
@@ -106,8 +108,15 @@ async def echo(message):
         elif text == "🎰casino":
             await casino(message)
     else:
-        await bot.send_message(chat_id=chat_id, text=message.text, disable_notification=True, reply_markup=get_inline_keyboard())
-    #receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
+        await bot.send_message(chat_id=chat_id, text=text, disable_notification=True,
+                               reply_markup=get_inline_keyboard())
+        await bot.send_poll(chat_id=chat_id, question="Есть два стула. На одном python-говёный, на другом "
+                                                      "java-просвящённый. На какой стул"
+                                                      " сам сядешь, а какой другу подставишь?",
+                            options=answer_list, is_anonymous=True, allows_multiple_answers=True,
+                            reply_markup=get_inline_keyboard())
+        await bot.send_
+    # receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
     # bot.forward_message(disable_notification=True, chat_id= )
 
     # inline_keyboard =
@@ -127,12 +136,14 @@ async def echo(message):
     # bot.send_message(chat_id, QUESTION.format(WORDS[0]))
     # await bot.send_message(chat_id, "БУУУУУУМ", reply_to_message_id=message.message_id)
 
+
 @bot.callback_query_handler(func=lambda call: True)
 async def callback_query(call):
     if call.data == "excellent":
         await bot.answer_callback_query(call.id, "УРааааа!")
     elif call.data == "fuck":
         await bot.answer_callback_query(call.id, "Похуй, пляшем")
+
 
 # Запускаем бота
 # bot.infinity_polling()  # не останавливаться
