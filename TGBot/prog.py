@@ -1,11 +1,12 @@
-import os.path
-from pathlib import Path
-
-from telebot.async_telebot import AsyncTeleBot
 import asyncio
-from config import *
+import os.path
 import random
+
+import telebot
+from telebot.async_telebot import AsyncTeleBot
 from telebot.types import *
+
+from config import *
 
 
 # TODO: сделать викторину на боте телеграм к следующему уроку
@@ -19,18 +20,32 @@ def check_answers(answer, rule_answer):
         return WORDS[random.randint(0, len(WORDS) - 1)]
 
 
-def get_inline_keyboard():
+def get_inline_keyboard(flag):
     inline_markup = InlineKeyboardMarkup()
-    for key in INLINE_LIST:
-        inline_markup.add(InlineKeyboardButton(key, callback_data=INLINE_LIST[key]))
+    if flag:
+        for key in INLINE_LIST:
+            inline_markup.add(InlineKeyboardButton(key, callback_data=INLINE_LIST[key]))
+    else:
+        for key in RULE_ANSWERS:
+            inline_markup.add(InlineKeyboardButton(key, callback_data=RULE_ANSWERS[key]))
     return inline_markup
 
 
 # Инициализировали бота
 bot = AsyncTeleBot(TOKEN)
+logger = telebot.logger
+telebot.logger.setLevel(logging.DEBUG)
 
 answer = 0
+text_question = ""
 
+'''
+Обработка ответа на инлайн вопрос.
+1. Вопрос в инлайновом сообщении. Текст хранится в функции
+2. Записать полученное сообщение в глобальную переменную
+3. Получив ответ от пользователя сообщением, обработать сообщение
+4. Реализовать!!!
+'''
 
 # Обработка команды /start
 @bot.message_handler(commands=['start'])
@@ -57,6 +72,7 @@ async def sticker(message):
     path_dirs = Path("stickers")  # свой путь к стикерам
     sticker_pack_list = os.listdir(path_dirs)  # загрузить список пакетов стикеров
     selected_sticker = sticker_pack_list[random.randint(0, len(sticker_pack_list) - 1)]
+    path_dir_str = path_dirs
     abs_path_to_stickers = Path(path_dirs + "\\" + selected_sticker).resolve()
     stickers_list = os.listdir(abs_path_to_stickers)
     size_list = len(stickers_list)  # получить размер списка
@@ -85,7 +101,7 @@ async def bowling(message):
     await bot.send_dice(chat_id, emoji="🎳")
 
 
-async def casino(message):
+async def casino(message: Message):
     chat_id = message.chat.id
     print(chat_id)
     await bot.send_dice(chat_id, emoji="🎰")
@@ -97,6 +113,25 @@ async def echo(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
     text = message.text
+
+    try:
+        res_string = text_question.split(" ")
+        one = 0
+        two = 0
+        for x in res_string:
+            if x.isnumeric():
+                if one == 0:
+                    one = int(x)
+                else:
+                    two = int(x)
+        res = one + two
+        if int(text) == res:
+            await bot.reply_to(message, "Правильно!")
+        else:
+            await bot.reply_to(message, "Неправильно бл..ть!")
+    except Exception as e:
+        await bot.send_message(chat_id, str(e))
+
     answer_list = ["На пики сам сяду, стул другу подставлю (потому что без друзей)", "Питон ломается, джава "
                                                                                      "выкидывается"]
 
@@ -109,13 +144,12 @@ async def echo(message):
             await casino(message)
     else:
         await bot.send_message(chat_id=chat_id, text=text, disable_notification=True,
-                               reply_markup=get_inline_keyboard())
+                               reply_markup=get_inline_keyboard(True))
         await bot.send_poll(chat_id=chat_id, question="Есть два стула. На одном python-говёный, на другом "
                                                       "java-просвящённый. На какой стул"
                                                       " сам сядешь, а какой другу подставишь?",
                             options=answer_list, is_anonymous=True, allows_multiple_answers=True,
-                            reply_markup=get_inline_keyboard())
-        await bot.send_
+                            reply_markup=get_inline_keyboard(True))
     # receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
     # bot.forward_message(disable_notification=True, chat_id= )
 
@@ -139,15 +173,21 @@ async def echo(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 async def callback_query(call):
+    global text_question
     if call.data == "excellent":
         await bot.answer_callback_query(call.id, "УРааааа!")
     elif call.data == "fuck":
-        await bot.answer_callback_query(call.id, "Похуй, пляшем")
-
+        one = random.randint(1, 9)
+        two = random.randint(1, 9)
+        text_question = "Сколько будет {0} + {1}".format(one, two)
+        await bot.answer_callback_query(call.id, text_question, show_alert=True)
+        await bot.edit_message_reply_markup(call.message.chat.id, call.message.id, reply_markup=get_inline_keyboard(False))
 
 # Запускаем бота
 # bot.infinity_polling()  # не останавливаться
 asyncio.run(bot.polling())
+
+# TODO: обработка сообщений в супер-группе
 
 # 1356924981 - Саша
 # 470054664 - Игнат
