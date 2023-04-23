@@ -109,7 +109,7 @@ async def casino(message: Message):
 
 # Если создаём эхо,т.е. что не отправь, он ответит, тогда пишем
 @bot.message_handler(content_types=['text'])
-async def echo(message):
+async def echo_text(message):
     # bot.send_message(message.chat.id, message.text)
     chat_id = message.chat.id
     text = message.text
@@ -145,11 +145,11 @@ async def echo(message):
     else:
         await bot.send_message(chat_id=chat_id, text=text, disable_notification=True,
                                reply_markup=get_inline_keyboard(True))
-        await bot.send_poll(chat_id=chat_id, question="Есть два стула. На одном python-говёный, на другом "
+        '''await bot.send_poll(chat_id=chat_id, question="Есть два стула. На одном python-говёный, на другом "
                                                       "java-просвящённый. На какой стул"
                                                       " сам сядешь, а какой другу подставишь?",
                             options=answer_list, is_anonymous=True, allows_multiple_answers=True,
-                            reply_markup=get_inline_keyboard(True))
+                            reply_markup=get_inline_keyboard(True))'''
     # receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
     # bot.forward_message(disable_notification=True, chat_id= )
 
@@ -170,7 +170,10 @@ async def echo(message):
     # bot.send_message(chat_id, QUESTION.format(WORDS[0]))
     # await bot.send_message(chat_id, "БУУУУУУМ", reply_to_message_id=message.message_id)
 
-
+@bot.message_handler(content_types=['sticker'])
+async def echo_sticker(message):
+    await bot.send_sticker(message.chat.id, message.sticker.file_id, reply_markup=None)
+0
 @bot.callback_query_handler(func=lambda call: True)
 async def callback_query(call):
     global text_question
