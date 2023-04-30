@@ -172,8 +172,29 @@ async def echo_text(message):
 
 @bot.message_handler(content_types=['sticker'])
 async def echo_sticker(message):
-    await bot.send_sticker(message.chat.id, message.sticker.file_id, reply_markup=None)
-0
+    file_uid = message.sticker.file_unique_id
+    with open("stickers_list_receive.txt", "r+") as file:
+        memory_stickers_list = file.readlines()
+
+    if len(memory_stickers_list) == 0:
+        with open("stickers_list_receive.txt", 'a+') as file:
+            file.write(file_uid + "\n")
+        await bot.reply_to(message, 'Я записал новый')
+    else:
+        with open("stickers_list_receive.txt", "r+") as file:
+            file_id = file.readline().replace("\n", "")
+            if file_id == file_uid:
+                await bot.reply_to(message, 'Мазафака, у меня он уже есть!')
+            else:
+                memory_stickers_list.append(file_uid + "\n")
+                await bot.reply_to(message, 'Я записал этот стикер себе в память')
+
+        with open("stickers_list_receive.txt", "a+") as file:
+            for file_id in memory_stickers_list:
+                file_in_list = file.next().replace("\n", "")
+                if file.readline().replace("\n", "") != file_id.replace("\n", ""):
+                    file.write(file_id)
+
 @bot.callback_query_handler(func=lambda call: True)
 async def callback_query(call):
     global text_question
