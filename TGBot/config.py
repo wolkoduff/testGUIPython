@@ -1,6 +1,6 @@
 TOKEN = '5821638217:AAGkeYEvsWlltgbarkYnLlfivJSWURYkI-c'  # token from @BotFather
 
-REPLY_LIST = ['🎲dice', '🎳bowling', '🎰casino']
+REPLY_LIST = ['🎲dice', '🎳bowling', '🎰casino', '🎯darts', '🏀basketball', '⚽football']
 
 INLINE_LIST = {'ЗАЕБИСЕЧНО': 'excellent',
                'ПИЗДЕЦ': 'fuck'}

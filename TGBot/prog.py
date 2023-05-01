@@ -53,14 +53,12 @@ async def start(message):
     chat_id = message.chat.id
     last_name = message.from_user.last_name
     first_name = message.from_user.first_name
-    print(chat_id)
     # Клавиатура
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     for text in REPLY_LIST:
-        markup.add(KeyboardButton(text))
-
-    # await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
-    #                       .format(last_name, first_name, bot.get_me().first_name), parse_mode='markdown')
+        markup.row(KeyboardButton(text))
+    await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
+                           .format(last_name, first_name, 12), parse_mode='markdown')
     await bot.reply_to(message, "Хочешь подробности?", reply_markup=markup)
 
 
@@ -72,17 +70,15 @@ async def sticker(message):
     path_dirs = Path("stickers")  # свой путь к стикерам
     sticker_pack_list = os.listdir(path_dirs)  # загрузить список пакетов стикеров
     selected_sticker = sticker_pack_list[random.randint(0, len(sticker_pack_list) - 1)]
-    path_dir_str = path_dirs
-    abs_path_to_stickers = Path(path_dirs + "\\" + selected_sticker).resolve()
+    abs_path_to_stickers = Path(selected_sticker).resolve()
     stickers_list = os.listdir(abs_path_to_stickers)
     size_list = len(stickers_list)  # получить размер списка
     selected_sticker = random.randint(0, size_list - 1)  # рандомное число стикера
     path_sticker = stickers_list[selected_sticker]  # получить стикер
     # receiver_rnd = CHAT_IDS[random.randint(0, 3)]
-    chatId = message.chat.id
+    chat_id = message.chat.id
     with open(path_sticker, 'rb') as sticker:
-        print(message.chat.id)
-        await bot.send_sticker(chatId, sticker)
+        await bot.send_sticker(chat_id, sticker)
     # with open(path_sticker, 'rb') as sticker:
     #     print(receiver_rnd)
     #     bot.send_sticker(receiver_rnd, sticker)
@@ -90,50 +86,65 @@ async def sticker(message):
 
 async def dice(message):
     chat_id = message.chat.id
-    print(chat_id)
-    await bot.delete_message(chat_id=chat_id, message_id=message.message_id)
     await bot.send_dice(chat_id, emoji="🎲")
 
 
 async def bowling(message):
     chat_id = message.chat.id
-    print(chat_id)
     await bot.send_dice(chat_id, emoji="🎳")
 
 
 async def casino(message: Message):
     chat_id = message.chat.id
-    print(chat_id)
     await bot.send_dice(chat_id, emoji="🎰")
 
+async def darts(message):
+    chat_id = message.chat.id
+    await bot.send_dice(chat_id, emoji="🎯")
+
+async def basketball(message):
+    chat_id = message.chat.id
+    await bot.send_dice(chat_id, emoji="🏀")
+
+async def football(message):
+    chat_id = message.chat.id
+    await bot.send_dice(chat_id, emoji="⚽")
+
+
+@bot.message_handler(commands=['poll'])
+async def send_pool(message: telebot.types.Message):
+    chat_id = message.chat.id
+    answer_list = ["На пики сам сяду, стул другу подставлю (потому что без друзей)", "Питон ломается, джава "
+                                                                                     "выкидывается"]
+    await bot.send_poll(chat_id=chat_id, question="Есть два стула. На одном python-говёный, на другом "
+                                                  "java-просвящённый. На какой стул"
+                                                  " сам сядешь, а какой другу подставишь?",
+                        options=answer_list, is_anonymous=True, allows_multiple_answers=True,
+                        reply_markup=get_inline_keyboard(True))
 
 # Если создаём эхо,т.е. что не отправь, он ответит, тогда пишем
 @bot.message_handler(content_types=['text'])
-async def echo_text(message):
-    # bot.send_message(message.chat.id, message.text)
+async def echo(message):
     chat_id = message.chat.id
     text = message.text
-
-    try:
-        res_string = text_question.split(" ")
-        one = 0
-        two = 0
-        for x in res_string:
-            if x.isnumeric():
-                if one == 0:
-                    one = int(x)
-                else:
-                    two = int(x)
-        res = one + two
-        if int(text) == res:
-            await bot.reply_to(message, "Правильно!")
-        else:
-            await bot.reply_to(message, "Неправильно бл..ть!")
-    except Exception as e:
-        await bot.send_message(chat_id, str(e))
-
-    answer_list = ["На пики сам сяду, стул другу подставлю (потому что без друзей)", "Питон ломается, джава "
-                                                                                     "выкидывается"]
+    if text.isnumeric():
+        try:
+            res_string = text_question.split(" ")
+            one = 0
+            two = 0
+            for x in res_string:
+                if x.isnumeric():
+                    if one == 0:
+                        one = int(x)
+                    else:
+                        two = int(x)
+            res = one + two
+            if int(text) == res:
+                await bot.reply_to(message, "Правильно!")
+            else:
+                await bot.reply_to(message, "Неправильно бл..ть!")
+        except Exception as e:
+            await bot.send_message(chat_id, str(e))
 
     if text in REPLY_LIST:
         if text == "🎲dice":
@@ -142,14 +153,12 @@ async def echo_text(message):
             await bowling(message)
         elif text == "🎰casino":
             await casino(message)
-    else:
-        await bot.send_message(chat_id=chat_id, text=text, disable_notification=True,
-                               reply_markup=get_inline_keyboard(True))
-        '''await bot.send_poll(chat_id=chat_id, question="Есть два стула. На одном python-говёный, на другом "
-                                                      "java-просвящённый. На какой стул"
-                                                      " сам сядешь, а какой другу подставишь?",
-                            options=answer_list, is_anonymous=True, allows_multiple_answers=True,
-                            reply_markup=get_inline_keyboard(True))'''
+        elif text == "🎯darts":
+            await darts(message)
+        elif text == "⚽football":
+            await football(message)
+        elif text == "🏀basketball":
+            await basketball(message)
     # receiver_rnd = CHAT_IDS[random.randint(0, len(CHAT_IDS))]
     # bot.forward_message(disable_notification=True, chat_id= )
 
@@ -199,7 +208,7 @@ async def echo_sticker(message):
 async def callback_query(call):
     global text_question
     if call.data == "excellent":
-        await bot.answer_callback_query(call.id, "УРааааа!")
+        await bot.answer_callback_query(call.id, "УРааааа!", show_alert=True)
     elif call.data == "fuck":
         one = random.randint(1, 9)
         two = random.randint(1, 9)
