@@ -51,14 +51,16 @@ text_question = ""
 @bot.message_handler(commands=['start'])
 async def start(message):
     chat_id = message.chat.id
-    last_name = message.from_user.last_name
-    first_name = message.from_user.first_name
+    from_user = message.from_user
+    last_name = from_user.last_name
+    first_name = from_user.first_name
+    bot_info = await bot.get_me()
     # Клавиатура
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     for text in REPLY_LIST:
         markup.row(KeyboardButton(text))
     await bot.send_message(chat_id, "Бодро пожаловать, *{0}* _{1}_!\nЯ - *{2}*, бот."
-                           .format(last_name, first_name, 12), parse_mode='markdown')
+                           .format(last_name, first_name, bot_info.first_name), parse_mode='markdown')
     await bot.reply_to(message, "Хочешь подробности?", reply_markup=markup)
 
 
